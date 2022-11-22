@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
+import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import { v4 } from 'uuid'
 
 const useStyles = makeStyles((theme) => ({
@@ -17,66 +18,95 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TodoInput = ({ todo, handleToggle }) => {
+export const TodoInput = ({ todo, handleToggle }) => {
   const classes = useStyles();
 
-  const { addTodo, editTodo } = useTodos();
-  const [currentToDo, setCurrentToDo] = useState({
-    id: v4(),
-    text: '',
+  const newTodo = {
+    id: null,
+    title: '',
+    subtext: '',
+    notes: '',
     completed: false,
+    priority: null,
+  }
+
+  const { addTodo, editTodo } = useTodos();
+  const [currentTodo, setCurrentTodo] = useState({
+    ...newTodo,
+    id: v4()
   });
 
   useEffect(() => {
     if(todo) {
-      setCurrentToDo(todo)
+      setCurrentTodo(todo)
     }
    
    }, [todo])
 
   const handleClick = () => {
    if(todo) {
-    editTodo(currentToDo);
-    setCurrentToDo({
-      id: null,
-      text: '',
-      completed: false,
-    });
+    editTodo(currentTodo);
+    setCurrentTodo(newTodo);
     handleToggle()
    } 
    else {
-    addTodo(currentToDo);
-    setCurrentToDo({
-      id: null,
-      text: '',
-      completed: false,
-    });
+    addTodo(currentTodo);
+    setCurrentTodo(newTodo);
    }
   };
 
   const handleChange = (event) => {
-    const { value } = event.target
-    setCurrentToDo({ 
-      ...currentToDo, text: value})
+    const { value, name } = event.target
+    setCurrentTodo({ 
+      ...currentTodo, [name]: value})
   }
   
 
   return (
     <Grid container>
-      <Grid item>
+
+      <Box m={1}>
         <TextField
           className={classes.textField}
-          label='what do you want to do?'
+          label='What is your task?'
           size='small'
           variant='outlined'
-          value={currentToDo.text}
+          name='title'
+          value={currentTodo.title}
           onChange={(e) => handleChange(e)}
         />
-      </Grid>
+      </Box>
+
+      <Box m={1}>
+        <TextField
+          className={classes.textField}
+          label='A little subtext never goes too far...'
+          size='small'
+          variant='outlined'
+          name='subtext'
+          value={currentTodo.subtext}
+          onChange={(e) => handleChange(e)}
+        />
+      </Box>
+
+      <Box m={1}>
+        <TextareaAutosize
+          className={classes.textField}
+          label='Feel free to share more details about the task'
+          placeholder='Feel free to share more details about the task'
+          size='small'
+          variant='outlined'
+          name='notes'
+          value={currentTodo.notes}
+          onChange={(e) => handleChange(e)}
+          minRows={9}
+        />
+      </Box>
+
       <Grid item>
         <Box pl={1}>
           <Button
-            disabled={currentToDo.text.length === 0}
+            disabled={currentTodo.title.length === 0}
             variant='contained'
             color='primary'
             onClick={handleClick}
@@ -89,5 +119,3 @@ const TodoInput = ({ todo, handleToggle }) => {
     </Grid>
   );
 };
-
-export default TodoInput;

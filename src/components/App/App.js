@@ -1,6 +1,6 @@
 import React from 'react';
 
-// import Footer from '../Footer';
+import {Footer} from '../Footer';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
@@ -51,8 +51,9 @@ const App = (props) => {
           }
           label='Dark Mode'
         />
+        <Footer />
       </Grid>
-      {/* <Footer /> */}
+      
     </Grid>
   );
 };

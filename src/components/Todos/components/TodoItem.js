@@ -1,41 +1,40 @@
-import React, { useState, useMemo } from 'react';
+import React from 'react';
 
 import { useTodos } from '../store/store';
 
+import { makeStyles } from '@material-ui/core/styles';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
-import IconButton from '@material-ui/core/IconButton';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
-import TodoInput from './TodoInput';
+import { ListItemIcon } from '@material-ui/core';
 
-export const TodoItem = ({ todo }) => {
-  const [filter, setFilter] = useState('all');
-  const [toggleForm, setToggleForm] = useState(false);
-  const { todos, toggleTodo, removeTodo } = useTodos();
+const useStyles = makeStyles(() => ({
+  listItem: {
+    padding: 0
+  },
+}));
 
-  const handleClick = () => setToggleForm(!toggleForm)
+export const TodoItem = ({ todo, handleClick }) => {
+  const classes = useStyles();
 
-  if(toggleForm) return <TodoInput todo={todo} handleToggle={handleClick} />
+  const { toggleTodo, selectTodo } = useTodos();
 
-  else return (
+  return (
     <>
-      <ListItem key={todo.id}>
-        <ListItemText primary={todo.text} />
-        <ListItemSecondaryAction>
+      <ListItem key={todo.id} className={classes.listItem}>
+        <ListItemIcon>
           <Checkbox
+            edge="end"
             checked={todo.completed}
             onClick={() => toggleTodo(todo.id)}
           />
-          <IconButton onClick={() =>  handleClick(todo)}>
-            <EditIcon />
-          </IconButton>
-           
-          <IconButton onClick={() => removeTodo(todo.id)}>
-            <DeleteIcon />
-          </IconButton>
+        </ListItemIcon>
+        
+        <ListItemText primary={todo.title} onClick={()=> selectTodo(todo.id)} />
+
+        <ListItemSecondaryAction>
+         
         </ListItemSecondaryAction>
       </ListItem>
       
@@ -43,4 +42,3 @@ export const TodoItem = ({ todo }) => {
   );
 };
 
-export default TodoItem;

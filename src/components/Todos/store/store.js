@@ -1,4 +1,4 @@
-import React, { useContext, createContext } from 'react';
+import React, { useContext, useState, createContext } from 'react';
 import useLocalStorage from '../../../hooks/useLocalStorage';
 import { v4 } from 'uuid'
 
@@ -10,25 +10,45 @@ const Context = createContext(
 );
 
 const Provider = (props) => {
+  const [currentTodo, setCurrentTodo] = useState()
   // children are all the child components in this component
   const { children } = props;
   const [todos, setTodos] = useLocalStorage('todos', [
     {
       id: v4(),
-      text: 'feed the dog',
+      title: 'feed the dog',
+      subtext: 'sub feed',
+      notes: 'dog stuff to be dealt with',
       completed: false,
+      priority: 1
     },
     {
       id: v4(),
-      text: 'go shopping',
+      title: 'go shopping',
+      subtext: 'shopping stuff',
+      notes: 'stuff about shopping is difficult',
       completed: false,
+      priority: 2
     },
     {
       id: v4(),
-      text: 'read the book',
-      completed: false,
+      title: 'read the book',
+      subtext: 'library ',
+      notes: 'stuff about books is difficult',
+      completed: true,
+      priority: null
     },
   ]);
+
+  const selectTodo = (id) => {
+    const currentTodo = todos.find(todo => todo.id === id)
+    if(id) {
+      setCurrentTodo(currentTodo)
+    }
+    else {
+      setCurrentTodo(null)
+    }
+  }
 
   const addTodo = (newTodo) => {
     setTodos([...todos, newTodo]);
@@ -65,7 +85,16 @@ const Provider = (props) => {
   };
 
   return (
-    <Context.Provider value={{ todos, addTodo, editTodo, removeTodo, toggleTodo }}>
+    <Context.Provider 
+      value={{ 
+        todos,
+        currentTodo, 
+        addTodo, 
+        editTodo, 
+        selectTodo, 
+        removeTodo, 
+        toggleTodo 
+      }}>
       {children}
     </Context.Provider>
   );

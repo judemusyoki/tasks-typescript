@@ -3,7 +3,11 @@ import React from 'react';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 
-const Filters = ({handleFilter}) => {
+export const Filters = ({handleFilter}) => {
+
+  const handleSelection = (selection) => {
+    handleFilter(selection)
+  }
 
   return (
   <>
@@ -11,7 +15,7 @@ const Filters = ({handleFilter}) => {
         <Button
           variant='contained'
           color='secondary'
-          onClick={() => handleFilter('all')}
+          onClick={() => handleSelection('all')}
         >
           All
         </Button>
@@ -20,7 +24,7 @@ const Filters = ({handleFilter}) => {
         <Button
           variant='contained'
           color='secondary'
-          onClick={() => handleFilter('completed')}
+          onClick={() => handleSelection('completed')}
         >
           Completed
         </Button>
@@ -29,7 +33,7 @@ const Filters = ({handleFilter}) => {
         <Button
           variant='contained'
           color='secondary'
-          onClick={() => handleFilter('not_completed')}
+          onClick={() => handleSelection('not_completed')}
         >
           Due
         </Button>
@@ -38,5 +42,3 @@ const Filters = ({handleFilter}) => {
     
   )
 }
-
-export default Filters;
