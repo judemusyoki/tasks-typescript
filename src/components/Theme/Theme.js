@@ -2,11 +2,11 @@ import React from 'react';
 
 import useLocalStorage from '../../hooks/useLocalStorage';
 
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import purple from '@material-ui/core/colors/purple';
 import green from '@material-ui/core/colors/green';
 
-const theme = createMuiTheme({
+const theme = createTheme({
   palette: {
     type: 'light',
     primary: purple,
@@ -14,7 +14,7 @@ const theme = createMuiTheme({
   },
 });
 
-const themeDark = createMuiTheme({
+const themeDark = createTheme({
   palette: {
     type: 'dark',
     primary: purple,

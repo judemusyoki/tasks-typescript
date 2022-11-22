@@ -8,11 +8,13 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
+import { TodoItem } from './TodoItem'
 
-const TodoList = () => {
+const TodoList = ({ handleEdit }) => {
   const [filter, setFilter] = useState('all');
   const { todos, toggleTodo, removeTodo } = useTodos();
 
@@ -25,24 +27,14 @@ const TodoList = () => {
       return todos.filter((todo) => !todo.completed);
     }
   }, [todos, filter]);
+  
 
   return (
     <>
       <List>
         {filteredTodos.map((todo) => {
           return (
-            <ListItem key={todo.id}>
-              <ListItemText primary={todo.text} />
-              <ListItemSecondaryAction>
-                <Checkbox
-                  checked={todo.completed}
-                  onClick={() => toggleTodo(todo.id)}
-                />
-                <IconButton onClick={() => removeTodo(todo.id)}>
-                  <DeleteIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
+            <TodoItem key={todo.id} todo={todo} />
           );
         })}
       </List>

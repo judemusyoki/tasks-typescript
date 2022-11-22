@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { withProvider } from './store/store';
 
@@ -8,14 +8,20 @@ import TodoInput from './components/TodoInput';
 import TodoList from './components/TodoList';
 
 const Todos = () => {
+  const [currentToDo, setCurrentToDo] = useState()
+
+  const handleEdit = (todo) => {
+   setCurrentToDo(todo)
+  }
+
   return (
     <Box p={2}>
       <Grid container direction='column'>
         <Grid item>
-          <TodoInput />
+          <TodoInput todo={currentToDo} />
         </Grid>
         <Grid item>
-          <TodoList />
+          <TodoList handleEdit={handleEdit} />
         </Grid>
       </Grid>
     </Box>

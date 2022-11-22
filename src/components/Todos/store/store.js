@@ -1,5 +1,6 @@
 import React, { useContext, createContext } from 'react';
 import useLocalStorage from '../../../hooks/useLocalStorage';
+import { v4 } from 'uuid'
 
 const Context = createContext(
   // Default context
@@ -13,33 +14,35 @@ const Provider = (props) => {
   const { children } = props;
   const [todos, setTodos] = useLocalStorage('todos', [
     {
-      id: 0,
+      id: v4(),
       text: 'feed the dog',
       completed: false,
     },
     {
-      id: 1,
+      id: v4(),
       text: 'go shopping',
       completed: false,
     },
     {
-      id: 2,
+      id: v4(),
       text: 'read the book',
       completed: false,
     },
   ]);
 
-  const addTodo = (text) => {
-    // Map over all todos and get the max's id and that becomes nextId
-    const nextId =
-      todos.length > 0 ? Math.max(...todos.map((todo) => todo.id)) + 1 : 0;
-    const newTodo = {
-      id: nextId,
-      text, // key and value is text
-      completed: false,
-    };
+  const addTodo = (newTodo) => {
     setTodos([...todos, newTodo]);
   };
+
+  const editTodo = (newTodo) => {
+  const newTodos = todos.map(todo => {
+    if(todo.id === newTodo.id) {
+      return newTodo
+    }
+    return todo
+  })
+  setTodos(newTodos)
+  }
 
   const removeTodo = (id) => {
     const newTodos = todos.filter((todo) => todo.id !== id);
@@ -62,7 +65,7 @@ const Provider = (props) => {
   };
 
   return (
-    <Context.Provider value={{ todos, addTodo, removeTodo, toggleTodo }}>
+    <Context.Provider value={{ todos, addTodo, editTodo, removeTodo, toggleTodo }}>
       {children}
     </Context.Provider>
   );
